@@ -5,6 +5,7 @@ import './index.css'
 import Home from '../src/Pages/Home.jsx'
 import Dashboard from '../src/Pages/Dashboard.jsx'
 import AddTask from '../src/Pages/AddTask.jsx'
+import PrivateRoute from "../src/Hooks/PrivateRoute.jsx"
 import {
   createRoutesFromElements,
   createBrowserRouter,
@@ -13,6 +14,7 @@ import {
 } from "react-router-dom";
 import Login from './Pages/Login.jsx'
 import Register from './Pages/Register.jsx'
+import AuthProvider from './Hooks/AuthProvider.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,8 +23,8 @@ const router = createBrowserRouter(
       element={<App />}
     >
       <Route path='/' element={<Home />}></Route>
-      <Route path='/dashboard' element={<Dashboard />}></Route>
-      <Route path='/addtask' element={<AddTask />}></Route>
+      <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>}></Route>
+      <Route path='/addtask' element={<PrivateRoute><AddTask /></PrivateRoute>}></Route>
       <Route path='/login' element={<Login />}></Route>
       <Route path='/register' element={<Register />}></Route>
 
@@ -32,6 +34,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )
