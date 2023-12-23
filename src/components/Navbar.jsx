@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { AuthContext } from '../Hooks/AuthProvider'
+import toast, { Toaster } from 'react-hot-toast';
 
 const Navbar = () => {
 
@@ -9,8 +10,8 @@ const Navbar = () => {
     return (
         <div className="navbar bg-base-100 w-full">
             <div className="navbar-start">
-
-                <a className="btn btn-ghost text-xl">TaskVault</a>
+                <Toaster />
+                <Link to='/' className="btn btn-ghost text-xl">TaskVault</Link>
             </div>
 
             <div className="navbar-end">

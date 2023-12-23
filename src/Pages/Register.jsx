@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../Hooks/AuthProvider'
 import { updateProfile } from 'firebase/auth'
+import toast from 'react-hot-toast'
 
 // import { auth } from '../Hooks/firebase'
 
@@ -23,15 +24,18 @@ const Register = () => {
         const name = form.name.value
         const email = form.email.value
         const password = form.password.value
-        const url = form.url.value
-        const role = 'member'
         const data = {
-            name, email, url, role
+            email,
+            tasks: {
+                todo: [],
+                ongoing: [],
+                completed: []
+            }
         }
-        signUp(name, email, password, url)
+        signUp(name, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                updateUser(name, url)
+                updateUser(name)
                 fetch('http://localhost:5000/users', {
                     method: 'POST',
                     headers: {
@@ -45,13 +49,7 @@ const Register = () => {
                     return response.json()
                 })
                     .then(responseData => {
-                        // Swal.fire({
-                        //     position: "top-end",
-                        //     icon: "success",
-                        //     title: "You have signed up successfully",
-                        //     showConfirmButton: false,
-                        //     timer: 1500
-                        // })
+                        toast('registration successful')
                         form.reset()
 
                     })
@@ -94,7 +92,7 @@ const Register = () => {
                     className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
                 >
                     <div>
-                        <label htmlFor="email" className="sr-only">Name</label>
+                        <label htmlFor="name" className="sr-only">Name</label>
 
                         <div className="relative">
                             <input
@@ -172,23 +170,6 @@ const Register = () => {
                                     />
                                 </svg>
                             </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label htmlFor="url" className="sr-only">Image URL</label>
-
-                        <div className="relative">
-
-                            <input
-                                required
-                                type="url"
-                                name='url'
-                                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                                placeholder="Enter Image URL"
-                            />
-
-
                         </div>
                     </div>
 

@@ -2,6 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Hooks/AuthProvider";
+import toast from "react-hot-toast";
 
 
 const Login = () => {
@@ -23,25 +24,14 @@ const Login = () => {
         const email = form.email.value
         const password = form.password.value
         logIn(email, password).then((userCredential) => {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: 'login successful',
-                showConfirmButton: false,
-                timer: 1500
-            })
-            navigate('/')
+            toast('Login successful')
+            console.log(userCredential);
+            navigate('/dashboard')
         })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                Swal.fire({
-                    position: "top-end",
-                    icon: "error",
-                    title: { errorMessage },
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                console.log(errorMessage);
             });
     }
 
