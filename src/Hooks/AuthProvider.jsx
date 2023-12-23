@@ -8,7 +8,7 @@ import {
     updateProfile
 } from "firebase/auth";
 import { createContext } from "react";
-import { auth } from "../Hooks/firebase";
+import { app, firebaseConfig } from "../Hooks/firebase";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,11 @@ import Loading from "../components/Loading";
 
 const provider = new GoogleAuthProvider();
 
+const auth = getAuth(app)
+
 export const AuthContext = createContext()
+
+console.log(firebaseConfig);
 
 const AuthProvider = ({ children }) => {
 
@@ -31,6 +35,7 @@ const AuthProvider = ({ children }) => {
             setLoading(false)
 
         });
+        console.log(auth);
         return () => unsubscribe();
     }, []);
 
@@ -53,12 +58,12 @@ const AuthProvider = ({ children }) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
-                const data = {
-                    name: user.displayName,
-                    email: user.email,
-                    url: user.photoURL,
-                    role: 'member'
-                }
+                // const data = {
+                //     name: user.displayName,
+                //     email: user.email,
+                //     url: user.photoURL,
+                //     role: 'member'
+                // }
                 // fetch('http://localhost:5000/users', {
                 //     method: 'POST',
                 //     headers: {
@@ -109,6 +114,7 @@ const AuthProvider = ({ children }) => {
     const logOut = () => {
         signOut(auth).then(() => {
             setCurrentUser(null)
+            useNavigate('/')
         }).catch((error) => {
             console.log(error);
         })

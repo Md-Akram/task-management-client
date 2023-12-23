@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { AuthContext } from '../Hooks/AuthProvider'
 import { updateProfile } from 'firebase/auth'
 
-import { auth } from '../Hooks/firebase'
+// import { auth } from '../Hooks/firebase'
 
 const Register = () => {
 
