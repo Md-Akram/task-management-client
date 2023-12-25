@@ -1,11 +1,18 @@
 import React, { useContext } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../Hooks/AuthProvider'
 import toast, { Toaster } from 'react-hot-toast';
 
 const Navbar = () => {
 
     const { logOut, currentUser } = useContext(AuthContext)
+
+    const navigate = useNavigate()
+
+    const handleClick = () => {
+        logOut()
+        navigate('/')
+    }
 
     return (
         <div className="navbar bg-base-100 w-full">
@@ -19,9 +26,9 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1">
                         <li><NavLink to='/'>Home</NavLink></li>
                         <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
-
+                        <li><NavLink to='/addtask'>Add Task</NavLink></li>
                         {currentUser ?
-                            <li><button onClick={() => logOut()} >Log Out</button></li> : <><li><NavLink to='/login'>Login</NavLink></li>
+                            <li><button onClick={handleClick} >Log Out</button></li> : <><li><NavLink to='/login'>Login</NavLink></li>
                                 <li><NavLink to='/register'>Register</NavLink></li></>}
 
 
@@ -39,6 +46,7 @@ const Navbar = () => {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 right-0 z-[1] p-2 shadow bg-base-100 rounded-box">
                         <li><NavLink to='/'>Home</NavLink></li>
                         <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
+                        <li><NavLink to='/addtask'>Add Task</NavLink></li>
 
                         {currentUser ?
                             <li><button onClick={() => logOut()} >Log Out</button></li> : <><li><NavLink to='/login'>Login</NavLink></li>

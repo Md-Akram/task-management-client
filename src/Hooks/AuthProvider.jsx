@@ -20,13 +20,10 @@ const auth = getAuth(app)
 
 export const AuthContext = createContext()
 
-console.log(firebaseConfig);
-
 const AuthProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
 
 
     useEffect(() => {
@@ -35,20 +32,13 @@ const AuthProvider = ({ children }) => {
             setLoading(false)
 
         });
-        console.log(auth);
         return () => unsubscribe();
     }, []);
 
 
 
-    const signUp = (name, email, password, url) => {
+    const signUp = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
-    }
-
-    const updateUser = (name, url) => {
-        return updateProfile(auth.currentUser, {
-            displayName: name, photoURL: url
-        })
     }
 
     const googleSignUp = () => {
@@ -58,37 +48,34 @@ const AuthProvider = ({ children }) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
-                // const data = {
-                //     name: user.displayName,
-                //     email: user.email,
-                //     url: user.photoURL,
-                //     role: 'member'
-                // }
-                // fetch('http://localhost:5000/users', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(data),
-                // }).then(response => {
-                //     if (!response.ok) {
-                //         throw new Error(`HTTP error! Status: ${response.status}`);
-                //     }
-                //     return response.json()
-                // })
-                //     .then(responseData => {
-                //         // Swal.fire({
-                //         //     position: "top-end",
-                //         //     icon: "success",
-                //         //     title: "You have signed up successfully",
-                //         //     showConfirmButton: false,
-                //         //     timer: 1500
-                //         // })
-                //         console.log(responseData);
-                //     })
-                //     .catch(error => {
-                //         console.error('Error:', error);
-                //     });
+
+
+                const data = {
+                    email: user.email,
+                    tasks: {
+                        todo: [],
+                        ongoing: [],
+                        completed: []
+                    }
+                }
+
+                fetch('https://task-management-server-theta-rosy.vercel.app/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json()
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+
+
+
                 setCurrentUser(user)
                 setLoading(false)
 
@@ -114,7 +101,7 @@ const AuthProvider = ({ children }) => {
     const logOut = () => {
         signOut(auth).then(() => {
             setCurrentUser(null)
-            useNavigate('/')
+
         }).catch((error) => {
             console.log(error);
         })
@@ -129,7 +116,6 @@ const AuthProvider = ({ children }) => {
         logIn,
         logOut,
         loading,
-        updateUser
     }
 
     return (

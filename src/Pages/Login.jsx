@@ -37,7 +37,7 @@ const Login = () => {
 
     const handleGoogleSignUp = () => {
         googleSignUp()
-        navigate('/')
+        navigate('/dashboard')
     }
 
     return (

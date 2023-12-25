@@ -21,7 +21,6 @@ const Register = () => {
         setLoading(true)
         e.preventDefault()
         const form = e.target
-        const name = form.name.value
         const email = form.email.value
         const password = form.password.value
         const data = {
@@ -32,11 +31,10 @@ const Register = () => {
                 completed: []
             }
         }
-        signUp(name, email, password)
+        signUp(email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                updateUser(name)
-                fetch('http://localhost:5000/users', {
+                fetch('https://task-management-server-theta-rosy.vercel.app/users', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -61,11 +59,7 @@ const Register = () => {
             })
             .catch((error) => {
                 const errorMessage = error.message;
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: errorMessage,
-                });
+                toast(errorMessage)
                 console.log(errorMessage);
                 setLoading(false)
             }).finally()
@@ -91,19 +85,6 @@ const Register = () => {
                     onSubmit={handleSubmit}
                     className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
                 >
-                    <div>
-                        <label htmlFor="name" className="sr-only">Name</label>
-
-                        <div className="relative">
-                            <input
-                                required
-                                type="text"
-                                name='name'
-                                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                                placeholder="Enter Name"
-                            />
-                        </div>
-                    </div>
 
                     <div>
                         <label htmlFor="email" className="sr-only">Email</label>
